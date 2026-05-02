@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Figurinhas Copa 2026</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --line: #d9e0ea;
+      --line-strong: #bcc7d8;
+      --text: #162033;
+      --muted: #5f6f86;
+      --soft: #eef3f9;
+      --accent: #244c8f;
+      --accent-soft: #e7eefc;
+      --success: #1e8a56;
+      --success-soft: #e9f8f0;
+      --warning: #b36b00;
+      --warning-soft: #fff4d7;
+      --extra: #7a4d00;
+      --extra-soft: #fff7e6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .theme-control {
+      display: grid;
+      gap: 6px;
+      min-width: 150px;
+    }
+
+    .theme-control label {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(16, 24, 40, 0.05);
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.cards {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .metric,
+    .input-card {
+      background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .metric {
+      border-left: 4px solid var(--accent);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .metric-sub {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .envelopes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input[type="number"],
+    input[type="search"],
+    select {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--line-strong);
+      padding: 0 12px;
+      font-size: 16px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    input[type="number"]:focus,
+    input[type="search"]:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(36, 76, 143, 0.12);
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    button:hover {
+      filter: brightness(0.98);
+      transform: translateY(-1px);
+    }
+
+    .table-shell {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      scrollbar-color: #aab7ca #eef3f9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1150px;
+    }
+
+    th, td {
+      padding: 7px 8px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+      white-space: nowrap;
+      background: #fff;
+    }
+
+    thead th {
+      background: #eaf0f7;
+      font-size: 13px;
+      font-weight: 800;
+      z-index: 2;
+    }
+
+    .album-table thead tr:first-child th {
+      height: 46px;
+      background: #1f3557;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.14);
+      letter-spacing: 0;
+    }
+
+    .group-cell {
+      background: #eef3f8;
+      font-weight: 800;
+      min-width: 84px;
+      color: #233754;
+    }
+
+    .selection-cell {
+      text-align: left;
+      font-weight: 700;
+      min-width: 190px;
+      color: #1d2f4a;
+    }
+
+    .code-cell {
+      min-width: 62px;
+      font-weight: 800;
+      background: #f2f5f8 !important;
+      color: #6b7788;
+      cursor: default;
+    }
+
+    .number-cell {
+      min-width: 58px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+    }
+
+    .sticky-col-1,
+    .sticky-col-2,
+    .sticky-col-3 {
+      position: sticky;
+      z-index: 3;
+    }
+
+    .sticky-col-1 { left: 0; }
+    .sticky-col-2 { left: 84px; }
+    .sticky-col-3 { left: 284px; }
+
+    .album-table td.sticky-col-1,
+    .album-table td.sticky-col-2,
+    .album-table td.sticky-col-3,
+    .album-table th.sticky-col-1,
+    .album-table th.sticky-col-2,
+    .album-table th.sticky-col-3,
+    .count-table td.sticky-col-1,
+    .count-table td.sticky-col-2,
+    .count-table th.sticky-col-1,
+    .count-table th.sticky-col-2 {
+      box-shadow: 1px 0 0 var(--line);
+    }
+
+    .album-table .sticky-col-1,
+    .album-table .sticky-col-2,
+    .album-table .sticky-col-3,
+    .count-table .sticky-col-1,
+    .count-table .sticky-col-2 {
+      background: #fff;
+    }
+
+    .album-table {
+      min-width: 1500px;
+      font-size: 13px;
+    }
+
+    .album-table td {
+      height: 46px;
+    }
+
+    .album-table tbody tr.album-team-group-start td {
+      border-top: 2px solid var(--line-strong);
+    }
+
+    .album-table tbody tr.album-extra-row td {
+      background: var(--extra-soft);
+    }
+
+    .album-table tbody tr.album-extra-row .group-cell,
+    .album-table tbody tr.album-extra-row .selection-cell {
+      background: #ffefd0;
+      color: var(--extra);
+    }
+
+    .album-table tbody tr.album-extra-row + tr.album-team-group-start td,
+    .album-table tbody tr.album-team-row + tr.album-extra-row td {
+      border-top: 3px solid #d5af65;
+    }
+
+    .album-table tbody tr:hover td {
+      background: #f8fbff;
+    }
+
+    .album-table tbody tr.album-extra-row:hover td {
+      background: #fff1d4;
+    }
+
+    .album-table tbody tr:nth-child(even) td,
+    .count-table tbody tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+
+    .album-table tbody tr:nth-child(even) td.sticky-col-1,
+    .album-table tbody tr:nth-child(even) td.sticky-col-2,
+    .album-table tbody tr:nth-child(even) td.sticky-col-3,
+    .count-table tbody tr:nth-child(even) td.sticky-col-1,
+    .count-table tbody tr:nth-child(even) td.sticky-col-2 {
+      background: #fcfdff;
+    }
+
+    .album-table tbody tr.album-extra-row td,
+    .album-table tbody tr.album-extra-row:nth-child(even) td {
+      background: var(--extra-soft);
+    }
+
+    .album-table tbody tr.album-extra-row .group-cell,
+    .album-table tbody tr.album-extra-row .selection-cell,
+    .album-table tbody tr.album-extra-row:nth-child(even) .group-cell,
+    .album-table tbody tr.album-extra-row:nth-child(even) .selection-cell {
+      background: #ffefd0;
+      color: var(--extra);
+    }
+
+    .album-table tbody tr:hover td,
+    .album-table tbody tr:nth-child(even):hover td {
+      background: #f8fbff;
+    }
+
+    .album-table tbody tr.album-extra-row:hover td,
+    .album-table tbody tr.album-extra-row:nth-child(even):hover td {
+      background: #fff1d4;
+    }
+
+    .album-table th:last-child,
+    .album-table td:last-child,
+    .count-table th:last-child,
+    .count-table td:last-child,
+    .mini-table th:last-child,
+    .mini-table td:last-child {
+      border-right: 0;
+    }
+
+    .album-table tr:last-child td,
+    .count-table tr:last-child td,
+    .mini-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .count-table {
+      min-width: 980px;
+    }
+
+    .count-table .selection-cell {
+      min-width: 220px;
+    }
+
+    .count-input {
+      width: 90px;
+      min-width: 90px;
+      text-align: center;
+    }
+
+    .total-cell {
+      font-weight: 800;
+      background: var(--accent-soft);
+      min-width: 92px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .mini-table {
+      min-width: 100%;
+    }
+
+    .mini-table th {
+      background: #edf2f8;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      background: #f5f8fc;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .album-sticker {
+      min-width: 58px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      border-radius: 0;
+      transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .album-label {
+      display: inline-block;
+    }
+
+    .album-type-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      margin-left: 5px;
+      padding: 2px 5px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    .album-sticker.shiny {
+      background: #fffdf0;
+      box-shadow: inset 0 0 0 1px rgba(194, 141, 0, 0.22);
+    }
+
+    .album-sticker.profiled-normal {
+      background: #eef7ff;
+      box-shadow: inset 0 0 0 1px rgba(36, 76, 143, 0.18);
+    }
+
+    .album-sticker.shiny .album-type-badge {
+      background: #f4c430;
+      color: #3b2a00;
+    }
+
+    .album-sticker.profiled-normal .album-type-badge {
+      background: #244c8f;
+      color: #fff;
+    }
+
+    .album-qty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      margin-left: 5px;
+      padding: 2px 5px;
+      border-radius: 999px;
+      background: rgba(30, 138, 86, 0.12);
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    .album-sticker:hover {
+      background: #eef5ff !important;
+      box-shadow: inset 0 0 0 2px rgba(36, 76, 143, 0.18);
+    }
+
+    .album-sticker.owned {
+      background: var(--success-soft) !important;
+      color: var(--success);
+      box-shadow: inset 0 0 0 2px rgba(30, 138, 86, 0.18);
+    }
+
+    .album-sticker.complete {
+      background: #d9f4e8 !important;
+      box-shadow: inset 0 0 0 2px rgba(30, 138, 86, 0.34);
+    }
+
+    .album-sticker.complete .album-qty {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .album-sticker.repeated {
+      background: var(--warning-soft) !important;
+      color: #8a5a00;
+      box-shadow: inset 0 0 0 2px rgba(179, 107, 0, 0.28);
+    }
+
+    .album-sticker.repeated .album-qty {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .album-empty-cell {
+      background: #f6f8fb !important;
+      color: var(--muted);
+      box-shadow: inset 0 0 0 1px rgba(217, 224, 234, 0.35);
+    }
+
+    .album-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .inline-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .inline-control input {
+      width: 86px;
+      height: 40px;
+    }
+
+    .mobile-album-picker {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .mobile-album-controls {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      background: #f7faff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-album-controls label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .mobile-album-controls select {
+      min-height: 44px;
+    }
+
+    .mobile-album-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .mobile-album-sticker {
+      min-height: 46px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      touch-action: manipulation;
+    }
+
+    .mobile-album-sticker.owned {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(30, 138, 86, 0.35);
+      box-shadow: inset 0 0 0 2px rgba(30, 138, 86, 0.14);
+    }
+
+    .mobile-album-sticker.complete {
+      background: #d9f4e8;
+      color: var(--success);
+      border-color: rgba(30, 138, 86, 0.35);
+    }
+
+    .mobile-album-sticker.repeated {
+      background: var(--warning-soft);
+      color: #8a5a00;
+      border-color: rgba(179, 107, 0, 0.35);
+    }
+
+    .mobile-album-sticker.shiny {
+      border-color: rgba(194, 141, 0, 0.35);
+    }
+
+    .mobile-album-sticker.profiled-normal {
+      border-color: rgba(36, 76, 143, 0.35);
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .chart-card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
+    .chart-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(88px, 110px) 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .bar-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #edf2f8;
+      overflow: hidden;
+      border: 1px solid #e1e7f0;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #244c8f, #4c7bd9);
+    }
+
+    .bar-value {
+      min-width: 40px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .backup-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+      gap: 14px;
+    }
+
+    .backup-panel {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      padding: 14px;
+    }
+
+    .backup-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      resize: vertical;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      padding: 12px;
+      font: 13px/1.4 Consolas, "Courier New", monospace;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(36, 76, 143, 0.12);
+    }
+
+    .status-line {
+      min-height: 18px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #000000;
+      --card: #080808;
+      --line: #242424;
+      --line-strong: #3a3a3a;
+      --text: #f4f4f4;
+      --muted: #a6a6a6;
+      --soft: #111111;
+      --accent: #f1f1f1;
+      --accent-soft: #151515;
+      --success: #45d483;
+      --success-soft: #092114;
+      --warning: #ffbf3f;
+      --warning-soft: #261900;
+      --extra: #ffd166;
+      --extra-soft: #150f05;
+    }
+
+    body[data-theme="dark"] .section {
+      box-shadow: none;
+    }
+
+    body[data-theme="dark"] .metric,
+    body[data-theme="dark"] .input-card {
+      background: linear-gradient(180deg, #111111 0%, #070707 100%);
+    }
+
+    body[data-theme="dark"] input[type="number"],
+    body[data-theme="dark"] input[type="search"],
+    body[data-theme="dark"] textarea,
+    body[data-theme="dark"] select,
+    body[data-theme="dark"] button {
+      background: #0b0b0b;
+      color: var(--text);
+      border-color: var(--line-strong);
+    }
+
+    body[data-theme="dark"] button.primary {
+      background: #f1f1f1;
+      color: #000000;
+      border-color: #f1f1f1;
+    }
+
+    body[data-theme="dark"] input[type="number"]:focus,
+    body[data-theme="dark"] input[type="search"]:focus,
+    body[data-theme="dark"] textarea:focus,
+    body[data-theme="dark"] select:focus {
+      border-color: #f1f1f1;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+    }
+
+    body[data-theme="dark"] .badge {
+      background: #101010;
+      border-color: var(--line);
+      color: var(--muted);
+    }
+
+    body[data-theme="dark"] .table-shell,
+    body[data-theme="dark"] .chart-card,
+    body[data-theme="dark"] .backup-panel {
+      background: #050505;
+      border-color: var(--line);
+    }
+
+    body[data-theme="dark"] th,
+    body[data-theme="dark"] td {
+      background: #070707;
+      border-color: var(--line);
+    }
+
+    body[data-theme="dark"] thead th {
+      background: #111111;
+      color: var(--text);
+    }
+
+    body[data-theme="dark"] .album-table thead tr:first-child th {
+      background: #000000;
+      color: #ffffff;
+      border-color: #2a2a2a;
+    }
+
+    body[data-theme="dark"] .group-cell,
+    body[data-theme="dark"] .album-table .sticky-col-1,
+    body[data-theme="dark"] .album-table .sticky-col-2,
+    body[data-theme="dark"] .album-table .sticky-col-3,
+    body[data-theme="dark"] .count-table .sticky-col-1,
+    body[data-theme="dark"] .count-table .sticky-col-2 {
+      background: #0d0d0d;
+      color: #f0f0f0;
+    }
+
+    body[data-theme="dark"] .selection-cell {
+      color: #f2f2f2;
+    }
+
+    body[data-theme="dark"] .code-cell,
+    body[data-theme="dark"] .album-empty-cell {
+      background: #111111 !important;
+      color: #7d7d7d;
+    }
+
+    body[data-theme="dark"] .album-table tbody tr:nth-child(even) td,
+    body[data-theme="dark"] .count-table tbody tr:nth-child(even) td {
+      background: #0b0b0b;
+    }
+
+    body[data-theme="dark"] .album-table tbody tr:nth-child(even) td.sticky-col-1,
+    body[data-theme="dark"] .album-table tbody tr:nth-child(even) td.sticky-col-2,
+    body[data-theme="dark"] .album-table tbody tr:nth-child(even) td.sticky-col-3,
+    body[data-theme="dark"] .count-table tbody tr:nth-child(even) td.sticky-col-1,
+    body[data-theme="dark"] .count-table tbody tr:nth-child(even) td.sticky-col-2 {
+      background: #0d0d0d;
+    }
+
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row td,
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row:nth-child(even) td {
+      background: var(--extra-soft);
+    }
+
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row .group-cell,
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row .selection-cell,
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row:nth-child(even) .group-cell,
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row:nth-child(even) .selection-cell {
+      background: #241700;
+      color: var(--extra);
+    }
+
+    body[data-theme="dark"] .album-table tbody tr:hover td,
+    body[data-theme="dark"] .album-table tbody tr:nth-child(even):hover td {
+      background: #151515;
+    }
+
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row:hover td,
+    body[data-theme="dark"] .album-table tbody tr.album-extra-row:nth-child(even):hover td {
+      background: #241807;
+    }
+
+    body[data-theme="dark"] .album-sticker.shiny {
+      background: #1d1702;
+      color: #f6d96c;
+      box-shadow: inset 0 0 0 1px rgba(255, 209, 102, 0.35);
+    }
+
+    body[data-theme="dark"] .album-sticker.profiled-normal {
+      background: #101010;
+      color: #efefef;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    }
+
+    body[data-theme="dark"] .album-sticker.profiled-normal .album-type-badge {
+      background: #e6e6e6;
+      color: #000000;
+    }
+
+    body[data-theme="dark"] .mobile-album-sticker.profiled-normal {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    body[data-theme="dark"] .album-sticker:hover {
+      background: #1a1a1a !important;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    body[data-theme="dark"] .album-sticker.owned,
+    body[data-theme="dark"] .mobile-album-sticker.owned {
+      background: var(--success-soft) !important;
+      color: var(--success);
+    }
+
+    body[data-theme="dark"] .album-sticker.complete,
+    body[data-theme="dark"] .mobile-album-sticker.complete {
+      background: #082916 !important;
+      color: var(--success);
+    }
+
+    body[data-theme="dark"] .album-sticker.repeated,
+    body[data-theme="dark"] .mobile-album-sticker.repeated {
+      background: var(--warning-soft) !important;
+      color: var(--warning);
+    }
+
+    body[data-theme="dark"] .mobile-album-picker,
+    body[data-theme="dark"] .mobile-album-controls {
+      background: #070707;
+      border-color: var(--line);
+    }
+
+    body[data-theme="dark"] .bar-track {
+      background: #151515;
+      border-color: #303030;
+    }
+
+    body[data-theme="dark"] .bar-fill {
+      background: linear-gradient(90deg, #f4f4f4, #8a8a8a);
+    }
+
+    body[data-theme="dark"] .total-cell {
+      background: #141414;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 14px;
+      }
+
+      .section {
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      .sticky-col-2 { left: 84px; }
+      .sticky-col-3 { left: 244px; }
+
+      .selection-cell {
+        min-width: 160px;
+      }
+
+      .mobile-album-picker {
+        display: block;
+      }
+
+      .backup-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .mobile-album-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div>
+        <h1>Controle de Figurinhas Copa 2026</h1>
+        <p class="subtitle">Versão clean com seus dados padrão, extras detalhados com contador por figurinha e gráfico de disparidade entre seleções.</p>
+      </div>
+      <div class="theme-control">
+        <label for="themeSelect">Tema</label>
+        <select id="themeSelect">
+          <option value="light">Claro</option>
+          <option value="dark">Escuro</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Envelopes comprados</h2>
+          <p class="section-note">Envelope normal = 7 figurinhas. Envelope MC = 4 normais + 1 perfilada amarela.</p>
+        </div>
+        <div class="badge">Os dados ficam salvos no navegador</div>
+      </div>
+
+      <div class="envelopes-grid">
+        <div class="input-card">
+          <label for="normalPacks">Quantos envelopes normais você comprou</label>
+          <input id="normalPacks" type="number" min="0" step="1" />
+          <div class="hint">Cada envelope normal conta 7 figurinhas.</div>
+        </div>
+        <div class="input-card">
+          <label for="mcPacks">Quantos envelopes MC você comprou</label>
+          <input id="mcPacks" type="number" min="0" step="1" />
+          <div class="hint">Cada MC conta 4 normais e 1 perfilada.</div>
+        </div>
+      </div>
+
+      <div class="grid cards" id="packMetrics"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Tabela do álbum</h2>
+          <p class="section-note">Clique para somar quantas figurinhas você tem. A tela calcula o que falta para a meta de álbuns e separa as repetidas.</p>
+        </div>
+      </div>
+
+      <div class="album-actions">
+        <button id="clearAlbum">Zerar marcações do álbum</button>
+        <label class="inline-control" for="albumTarget">
+          Álbuns para completar
+          <input id="albumTarget" type="number" min="1" max="20" step="1" />
+        </label>
+      </div>
+
+      <div class="grid cards" id="albumMetrics" style="margin-bottom: 16px;"></div>
+
+      <div class="table-shell">
+        <table class="album-table" id="albumTable"></table>
+      </div>
+      <div class="mobile-album-picker" id="mobileAlbumPicker"></div>
+
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Contagem por seleção</h2>
+          <p class="section-note">Normais, brilhantes e perfiladas MC com total automático. O gráfico abaixo usa esses totais para mostrar as maiores e menores seleções.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left" style="min-width: min(100%, 340px); flex: 1;">
+          <input id="filterInput" type="search" placeholder="Filtrar por grupo, seleção ou código" />
+        </div>
+        <div class="toolbar-right">
+          <button id="clearCounts">Zerar contagem</button>
+          <button id="resetDefaults">Voltar para seus dados padrão</button>
+          <button id="clearAll" class="primary">Zerar tudo</button>
+        </div>
+      </div>
+
+      <div class="grid cards" id="collectionMetrics" style="margin-bottom: 16px;"></div>
+
+      <div class="table-shell">
+        <table class="count-table" id="countTable"></table>
+      </div>
+
+      <div class="footer-note">Dica: clique nas células da tabela do álbum para marcar o que você já tem, use os contadores dos extras e acompanhe o gráfico para descobrir diferenças entre as seleções.</div>
+    </section>
+
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Disparidade entre seleções</h2>
+          <p class="section-note">Comparativo automático das seleções com mais figurinhas e menos figurinhas, usando a soma de normais, brilhantes e perfiladas MC.</p>
+        </div>
+      </div>
+
+      <div class="grid cards" id="disparityMetrics" style="margin-bottom: 16px;"></div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Seleções com mais figurinhas</h3>
+          <p>Ranking das maiores quantidades cadastradas.</p>
+          <div class="bar-list" id="topTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Seleções com menos figurinhas</h3>
+          <p>Ranking das menores quantidades cadastradas.</p>
+          <div class="bar-list" id="bottomTeamsChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Insights do álbum</h2>
+          <p class="section-note">Outras leituras automáticas para entender onde a coleção está avançando, sobrando ou ficando para trás.</p>
+        </div>
+      </div>
+
+      <div class="grid cards" id="insightMetrics" style="margin-bottom: 16px;"></div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Total por grupo</h3>
+          <p>Soma cadastrada por grupo, considerando normais, brilhantes e perfiladas MC.</p>
+          <div class="bar-list" id="groupTotalsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Composição da coleção</h3>
+          <p>Participação de normais, brilhantes e perfiladas MC no total cadastrado.</p>
+          <div class="bar-list" id="compositionChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Mais próximas de completar</h3>
+          <p>Seleções com menos faltantes para fechar a meta de álbuns.</p>
+          <div class="bar-list" id="closestTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Repetidas por seleção</h3>
+          <p>Onde há mais figurinhas acima das 2 necessárias.</p>
+          <div class="bar-list" id="repeatedTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Extras do álbum</h3>
+          <p>FWC do início, FWC do fim e Coca-Cola em preenchidas, faltantes e repetidas.</p>
+          <div class="bar-list" id="extraAlbumChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Incoerências tabela x contadores</h3>
+          <p>Compara a tabela do álbum com o total informado nos contadores por seleção.</p>
+          <div class="bar-list" id="inconsistencyChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Backup dos dados</h2>
+          <p class="section-note">Exporte, copie ou importe os dados salvos neste navegador em formato JSON.</p>
+        </div>
+      </div>
+
+      <div class="backup-grid">
+        <div class="backup-panel">
+          <div class="backup-actions">
+            <button id="exportJson">Exportar JSON</button>
+            <button id="copyJson">Copiar JSON</button>
+          </div>
+          <textarea id="backupJson" readonly placeholder="O JSON exportado aparece aqui."></textarea>
+          <div class="status-line" id="backupStatus"></div>
+        </div>
+        <div class="backup-panel">
+          <div class="backup-actions">
+            <button id="importJson">Importar JSON</button>
+            <button id="importJsonFileButton">Importar arquivo</button>
+            <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
+          </div>
+          <textarea id="importJsonText" placeholder="Cole aqui um JSON exportado e clique em Importar JSON."></textarea>
+          <div class="status-line" id="importStatus"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const TEAMS = [{"group": "A", "name": "México", "code": "MEX"}, {"group": "A", "name": "África do Sul", "code": "RSA"}, {"group": "A", "name": "Coreia do Sul", "code": "KOR"}, {"group": "A", "name": "Rep. Tcheca", "code": "CZE"}, {"group": "B", "name": "Canadá", "code": "CAN"}, {"group": "B", "name": "Bósnia", "code": "BIH"}, {"group": "B", "name": "Catar", "code": "QAT"}, {"group": "B", "name": "Suíça", "code": "SUI"}, {"group": "C", "name": "Brasil", "code": "BRA"}, {"group": "C", "name": "Marrocos", "code": "MAR"}, {"group": "C", "name": "Haiti", "code": "HAI"}, {"group": "C", "name": "Escócia", "code": "SCO"}, {"group": "D", "name": "Estados Unidos", "code": "USA"}, {"group": "D", "name": "Paraguai", "code": "PAR"}, {"group": "D", "name": "Austrália", "code": "AUS"}, {"group": "D", "name": "Turquia", "code": "TUR"}, {"group": "E", "name": "Alemanha", "code": "GER"}, {"group": "E", "name": "Curaçao", "code": "CUW"}, {"group": "E", "name": "Costa do Marfim", "code": "CIV"}, {"group": "E", "name": "Equador", "code": "ECU"}, {"group": "F", "name": "Holanda", "code": "NED"}, {"group": "F", "name": "Japão", "code": "JPN"}, {"group": "F", "name": "Suécia", "code": "SWE"}, {"group": "F", "name": "Tunísia", "code": "TUN"}, {"group": "G", "name": "Bélgica", "code": "BEL"}, {"group": "G", "name": "Egito", "code": "EGY"}, {"group": "G", "name": "Irã", "code": "IRN"}, {"group": "G", "name": "Nova Zelândia", "code": "NZL"}, {"group": "H", "name": "Espanha", "code": "ESP"}, {"group": "H", "name": "Cabo Verde", "code": "CPV"}, {"group": "H", "name": "Arábia Saudita", "code": "KSA"}, {"group": "H", "name": "Uruguai", "code": "URU"}, {"group": "I", "name": "França", "code": "FRA"}, {"group": "I", "name": "Senegal", "code": "SEN"}, {"group": "I", "name": "Iraque", "code": "IRQ"}, {"group": "I", "name": "Noruega", "code": "NOR"}, {"group": "J", "name": "Argentina", "code": "ARG"}, {"group": "J", "name": "Argélia", "code": "ALG"}, {"group": "J", "name": "Áustria", "code": "AUT"}, {"group": "J", "name": "Jordânia", "code": "JOR"}, {"group": "K", "name": "Portugal", "code": "POR"}, {"group": "K", "name": "Congo", "code": "COD"}, {"group": "K", "name": "Uzbequistão", "code": "UZB"}, {"group": "K", "name": "Colômbia", "code": "COL"}, {"group": "L", "name": "Inglaterra", "code": "ENG"}, {"group": "L", "name": "Croácia", "code": "CRO"}, {"group": "L", "name": "Gana", "code": "GHA"}, {"group": "L", "name": "Panamá", "code": "PAN"}];
+    const FWC_START_ITEMS = ['00', '1', '2', '3', '4', '5', '6', '7', '8'];
+    const FWC_END_ITEMS = ['9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
+    const COKE_ITEMS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
+
+    const EXTRA_ROWS = [
+      { group: 'Extra', name: 'FIFA World Cup History', code: 'FWC', items: FWC_END_ITEMS },
+      { group: 'Extra', name: 'Figurinhas da Coca-Cola', code: 'CC', items: COKE_ITEMS }
+    ];
+
+    const COUNT_ROWS = [
+      ...TEAMS.map(team => ({ ...team, id: `${team.group}-${team.code}` })),
+      ...EXTRA_ROWS.map(row => ({ ...row, id: `extra-${row.code}` }))
+    ];
+
+    const DEFAULT_PACKS = {"normalPacks": 200, "mcPacks": 60};
+    const DEFAULT_COUNTS = {"A-MEX": {"normal": 36, "shiny": 0, "mc": 59}, "A-RSA": {"normal": 64, "shiny": 0, "mc": 0}, "A-KOR": {"normal": 36, "shiny": 4, "mc": 0}, "A-CZE": {"normal": 11, "shiny": 0, "mc": 0}, "B-CAN": {"normal": 46, "shiny": 1, "mc": 0}, "B-BIH": {"normal": 10, "shiny": 1, "mc": 0}, "B-QAT": {"normal": 41, "shiny": 1, "mc": 0}, "B-SUI": {"normal": 29, "shiny": 3, "mc": 0}, "C-BRA": {"normal": 44, "shiny": 1, "mc": 0}, "C-MAR": {"normal": 34, "shiny": 2, "mc": 0}, "C-HAI": {"normal": 31, "shiny": 2, "mc": 0}, "C-SCO": {"normal": 54, "shiny": 2, "mc": 0}, "D-USA": {"normal": 16, "shiny": 0, "mc": 0}, "D-PAR": {"normal": 27, "shiny": 2, "mc": 0}, "D-AUS": {"normal": 33, "shiny": 2, "mc": 0}, "D-TUR": {"normal": 11, "shiny": 0, "mc": 0}, "E-GER": {"normal": 48, "shiny": 0, "mc": 0}, "E-CUW": {"normal": 42, "shiny": 1, "mc": 0}, "E-CIV": {"normal": 38, "shiny": 1, "mc": 0}, "E-ECU": {"normal": 42, "shiny": 1, "mc": 0}, "F-NED": {"normal": 27, "shiny": 4, "mc": 0}, "F-JPN": {"normal": 47, "shiny": 3, "mc": 0}, "F-SWE": {"normal": 10, "shiny": 0, "mc": 0}, "F-TUN": {"normal": 19, "shiny": 5, "mc": 0}, "G-BEL": {"normal": 49, "shiny": 2, "mc": 0}, "G-EGY": {"normal": 28, "shiny": 0, "mc": 0}, "G-IRN": {"normal": 21, "shiny": 0, "mc": 0}, "G-NZL": {"normal": 32, "shiny": 1, "mc": 0}, "H-ESP": {"normal": 31, "shiny": 1, "mc": 0}, "H-CPV": {"normal": 38, "shiny": 2, "mc": 0}, "H-KSA": {"normal": 33, "shiny": 2, "mc": 0}, "H-URU": {"normal": 17, "shiny": 2, "mc": 0}, "I-FRA": {"normal": 35, "shiny": 1, "mc": 0}, "I-SEN": {"normal": 51, "shiny": 1, "mc": 0}, "I-IRQ": {"normal": 7, "shiny": 1, "mc": 0}, "I-NOR": {"normal": 36, "shiny": 1, "mc": 0}, "J-ARG": {"normal": 32, "shiny": 2, "mc": 0}, "J-ALG": {"normal": 34, "shiny": 1, "mc": 0}, "J-AUT": {"normal": 32, "shiny": 1, "mc": 0}, "J-JOR": {"normal": 20, "shiny": 1, "mc": 0}, "K-POR": {"normal": 24, "shiny": 2, "mc": 0}, "K-COD": {"normal": 10, "shiny": 1, "mc": 0}, "K-UZB": {"normal": 15, "shiny": 0, "mc": 0}, "K-COL": {"normal": 42, "shiny": 1, "mc": 0}, "L-ENG": {"normal": 25, "shiny": 3, "mc": 0}, "L-CRO": {"normal": 58, "shiny": 0, "mc": 0}, "L-GHA": {"normal": 32, "shiny": 0, "mc": 0}, "L-PAN": {"normal": 53, "shiny": 2, "mc": 0}, "extra-FWC": {"normal": 6, "shiny": 0, "mc": 0}};
+    const DEFAULT_ALBUM = {};
+    const DEFAULT_ALBUM_TARGET = 2;
+    const ALBUM_TABLE_STICKER_COLUMNS = 21;
+    const STORAGE_VERSION = 'copa2026-v4';
+
+    const EXTRA_ALBUM_ROWS = [
+      {
+        id: 'fwc-start',
+        group: 'Extra',
+        name: 'FWC do início',
+        placement: 'start',
+        cells: FWC_START_ITEMS
+      },
+      {
+        id: 'fwc-end',
+        group: 'Extra',
+        name: 'FIFA World Cup History',
+        placement: 'end',
+        cells: FWC_END_ITEMS
+      },
+      {
+        id: 'coke',
+        group: 'Extra',
+        name: 'Coca-Cola',
+        placement: 'end',
+        cells: COKE_ITEMS.map(item => `CC${item}`)
+      }
+    ];
+
+    const store = {
+      get(key, fallback) {
+        const raw = localStorage.getItem(key);
+        if (raw === null) return clone(fallback);
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return clone(fallback);
+        }
+      },
+      set(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+    };
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function initDefaults() {
+      const currentVersion = localStorage.getItem('copa2026-storage-version');
+      if (currentVersion !== STORAGE_VERSION) {
+        store.set('copa2026-packs', clone(DEFAULT_PACKS));
+        store.set('copa2026-counts', clone(DEFAULT_COUNTS));
+        store.set('copa2026-album', clone(DEFAULT_ALBUM));
+        localStorage.setItem('copa2026-storage-version', STORAGE_VERSION);
+      }
+
+      migrateAlbumQuantities();
+    }
+
+    function migrateAlbumQuantities() {
+      const state = store.get('copa2026-album', DEFAULT_ALBUM);
+      let changed = false;
+
+      Object.keys(state).forEach(id => {
+        const quantity = getAlbumQuantity(state, id);
+        if (quantity <= 0) {
+          delete state[id];
+          changed = true;
+        } else if (state[id] !== quantity) {
+          state[id] = quantity;
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        store.set('copa2026-album', state);
+      }
+    }
+
+    function safeInt(value) {
+      const parsed = parseInt(value, 10);
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+    }
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat('pt-BR').format(value || 0);
+    }
+
+    function getAlbumTarget() {
+      const saved = safeInt(localStorage.getItem('copa2026-album-target'));
+      return saved >= 1 ? saved : DEFAULT_ALBUM_TARGET;
+    }
+
+    function setAlbumTarget(value) {
+      const target = Math.max(1, Math.min(20, safeInt(value) || DEFAULT_ALBUM_TARGET));
+      localStorage.setItem('copa2026-album-target', String(target));
+      const input = document.getElementById('albumTarget');
+      if (input) input.value = target;
+      renderAlbumTable();
+      renderCountTable();
+      syncBackupJson();
+    }
+
+    function restoreAlbumTarget() {
+      const input = document.getElementById('albumTarget');
+      if (input) input.value = getAlbumTarget();
+    }
+
+    function getAlbumQuantity(albumState, id) {
+      const value = albumState[id];
+      if (value === true) return 1;
+      if (value === false || value === null || value === undefined) return 0;
+      return safeInt(value);
+    }
+
+    function getNextAlbumQuantity(quantity) {
+      return quantity + 1;
+    }
+
+    function getPreviousAlbumQuantity(quantity) {
+      return Math.max(0, quantity - 1);
+    }
+
+    function setAlbumQuantity(albumState, id, quantity) {
+      if (quantity <= 0) {
+        delete albumState[id];
+        return;
+      }
+
+      albumState[id] = quantity;
+    }
+
+    function getAlbumPressState(quantity) {
+      const target = getAlbumTarget();
+      if (quantity <= 0) return 'false';
+      return quantity >= target ? 'true' : 'mixed';
+    }
+
+    function getAlbumStickerClass(quantity) {
+      const target = getAlbumTarget();
+      if (quantity > target) return ' owned complete repeated';
+      if (quantity >= target) return ' owned complete';
+      return quantity > 0 ? ' owned' : '';
+    }
+
+    function getAlbumStickerTypeClass(cell) {
+      if (cell.type === 'shiny') return ' shiny';
+      if (cell.type === 'profiled-normal') return ' profiled-normal';
+      return '';
+    }
+
+    function getAlbumStickerTypeLabel(cell) {
+      if (cell.type === 'shiny') return 'BR';
+      if (cell.type === 'profiled-normal') return 'Perfilada';
+      return '';
+    }
+
+    function getAlbumStickerTypeDescription(cell) {
+      if (cell.type === 'shiny') return 'brilhante';
+      if (cell.type === 'profiled-normal') return 'perfilada normal';
+      return '';
+    }
+
+    function getAlbumStickerContent(cell, quantity) {
+      const target = getAlbumTarget();
+      const quantityText = quantity > target ? `${quantity}x` : `${quantity}/${target}`;
+      const typeLabel = getAlbumStickerTypeLabel(cell);
+      const typeBadge = typeLabel ? `<span class="album-type-badge">${typeLabel}</span>` : '';
+      const quantityLabel = quantity > 0 ? `<span class="album-qty">${quantityText}</span>` : '';
+      return `<span class="album-label">${cell.label}</span>${typeBadge}${quantityLabel}`;
+    }
+
+    function getAlbumStickerAriaLabel(cell, quantity) {
+      const target = getAlbumTarget();
+      const typeDescription = getAlbumStickerTypeDescription(cell);
+      const suffix = typeDescription ? `, ${typeDescription}` : '';
+      return `${cell.label}${suffix}: ${quantity} figurinha(s), ${Math.max(0, target - quantity)} faltando para ${target} albuns`;
+    }
+
+    function renderAlbumStickerCell(cell, index, albumState) {
+      if (!cell) {
+        const sticky = index === 0 ? ' sticky-col-3' : '';
+        return `<td class="number-cell album-empty-cell${sticky}" aria-hidden="true"></td>`;
+      }
+
+      const quantity = getAlbumQuantity(albumState, cell.id);
+      const sticky = index === 0 ? ' sticky-col-3' : '';
+      if (cell.type === 'code') {
+        return `<td class="code-cell number-cell${sticky}" aria-hidden="true">${cell.label}</td>`;
+      }
+
+      return `<td class="album-sticker number-cell${sticky}${getAlbumStickerTypeClass(cell)}${getAlbumStickerClass(quantity)}" data-album-id="${cell.id}" tabindex="0" role="button" aria-pressed="${getAlbumPressState(quantity)}" aria-label="${getAlbumStickerAriaLabel(cell, quantity)}">${getAlbumStickerContent(cell, quantity)}</td>`;
+    }
+
+    function getAlbumCellsForTeam(team) {
+      return [
+        { id: `${team.group}-${team.code}-START-CODE`, label: team.code, type: 'code' },
+        ...Array.from({ length: 10 }, (_, index) => {
+          const stickerId = index.toString().padStart(2, '0');
+          const label = index + 1;
+          return { id: `${team.group}-${team.code}-${stickerId}`, label, type: label === 1 ? 'shiny' : 'normal' };
+        }),
+        ...Array.from({ length: 10 }, (_, index) => {
+          const value = index + 11;
+          return { id: `${team.group}-${team.code}-${value}`, label: value, type: value === 13 ? 'profiled-normal' : 'normal' };
+        })
+      ];
+    }
+
+    function getSelectableAlbumCells(cells) {
+      return cells.filter(cell => cell.type !== 'code');
+    }
+
+    function getExtraAlbumCells(row) {
+      return row.cells.map(label => ({
+        id: `extra-${row.id}-${label}`,
+        label
+      }));
+    }
+
+    function getExtraAlbumTableCells(row) {
+      const cells = getExtraAlbumCells(row);
+      return Array.from({ length: ALBUM_TABLE_STICKER_COLUMNS }, (_, index) => cells[index] || null);
+    }
+
+    function getAlbumRows() {
+      const startExtras = EXTRA_ALBUM_ROWS.filter(row => row.placement === 'start');
+      const endExtras = EXTRA_ALBUM_ROWS.filter(row => row.placement === 'end');
+
+      return [
+        ...startExtras.map(row => ({
+          id: `extra-${row.id}`,
+          group: row.group,
+          name: row.name,
+          cells: getExtraAlbumCells(row)
+        })),
+        ...TEAMS.map(team => ({
+          id: `${team.group}-${team.code}`,
+          group: `Grupo ${team.group}`,
+          name: team.name,
+          cells: getSelectableAlbumCells(getAlbumCellsForTeam(team))
+        })),
+        ...endExtras.map(row => ({
+          id: `extra-${row.id}`,
+          group: row.group,
+          name: row.name,
+          cells: getExtraAlbumCells(row)
+        }))
+      ];
+    }
+
+    function getAlbumStickerIds() {
+      return getAlbumRows().flatMap(row => row.cells.map(cell => cell.id));
+    }
+
+    function renderPackMetrics() {
+      const normalPacks = safeInt(document.getElementById('normalPacks').value);
+      const mcPacks = safeInt(document.getElementById('mcPacks').value);
+
+      const totalNormalFromPacks = (normalPacks * 7) + (mcPacks * 4);
+      const totalProfiledFromPacks = mcPacks;
+      const totalFromPacks = (normalPacks * 7) + (mcPacks * 5);
+      const totalPacks = normalPacks + mcPacks;
+
+      const metrics = [
+        { label: 'Total de envelopes', value: totalPacks, sub: `${formatNumber(normalPacks)} normais + ${formatNumber(mcPacks)} MC` },
+        { label: 'Figurinhas estimadas', value: totalFromPacks, sub: 'Somando envelopes normais e MC' },
+        { label: 'Normais estimadas', value: totalNormalFromPacks, sub: '7 no normal + 4 no MC' },
+        { label: 'Perfiladas MC estimadas', value: totalProfiledFromPacks, sub: '1 perfilada por envelope MC' }
+      ];
+
+      document.getElementById('packMetrics').innerHTML = metrics.map(metric => `
+        <div class="metric">
+          <div class="metric-label">${metric.label}</div>
+          <div class="metric-value">${formatNumber(metric.value)}</div>
+          <div class="metric-sub">${metric.sub}</div>
+        </div>
+      `).join('');
+
+      store.set('copa2026-packs', { normalPacks, mcPacks });
+      renderCollectionMetrics();
+    }
+
+    function renderAlbumTable() {
+      const table = document.getElementById('albumTable');
+      const albumState = store.get('copa2026-album', DEFAULT_ALBUM);
+      const groupCounts = TEAMS.reduce((acc, team) => {
+        acc[team.group] = (acc[team.group] || 0) + 1;
+        return acc;
+      }, {});
+      const startExtras = EXTRA_ALBUM_ROWS.filter(row => row.placement === 'start');
+      const endExtras = EXTRA_ALBUM_ROWS.filter(row => row.placement === 'end');
+
+      let html = `
+        <thead>
+          <tr>
+            <th class="sticky-top sticky-col-1">Grupo</th>
+            <th class="sticky-top sticky-col-2">Seleção</th>
+            <th class="sticky-top" colspan="11">Página inicial</th>
+            <th class="sticky-top" colspan="10">Continuação</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      startExtras.forEach(row => {
+        html += `
+          <tr class="album-extra-row album-extra-start">
+            <td class="group-cell sticky-col-1">Extra</td>
+            <td class="selection-cell sticky-col-2">${row.name}</td>
+            ${getExtraAlbumTableCells(row).map((cell, index) => renderAlbumStickerCell(cell, index, albumState)).join('')}
+          </tr>
+        `;
+      });
+
+      let lastGroup = null;
+      TEAMS.forEach(team => {
+        const isGroupStart = team.group !== lastGroup;
+        html += `<tr class="album-team-row${isGroupStart ? ' album-team-group-start' : ''}">`;
+
+        if (isGroupStart) {
+          html += `<td class="group-cell sticky-col-1" rowspan="${groupCounts[team.group]}">Grupo ${team.group}</td>`;
+          lastGroup = team.group;
+        }
+
+        html += `<td class="selection-cell sticky-col-2">${team.name}</td>`;
+
+        const cells = getAlbumCellsForTeam(team);
+
+        cells.forEach((cell, index) => {
+          html += renderAlbumStickerCell(cell, index, albumState);
+        });
+
+        html += '</tr>';
+      });
+
+      endExtras.forEach(row => {
+        html += `
+          <tr class="album-extra-row album-extra-end">
+            <td class="group-cell sticky-col-1">Extra</td>
+            <td class="selection-cell sticky-col-2">${row.name}</td>
+            ${getExtraAlbumTableCells(row).map((cell, index) => renderAlbumStickerCell(cell, index, albumState)).join('')}
+          </tr>
+        `;
+      });
+
+      html += '</tbody>';
+      table.innerHTML = html;
+      bindAlbumInputs();
+      renderAlbumMetrics();
+      renderMobileAlbumSelector();
+    }
+
+    function bindAlbumInputs() {
+      document.querySelectorAll('[data-album-id]').forEach(cell => {
+        const changeQuantity = direction => {
+          const state = store.get('copa2026-album', DEFAULT_ALBUM);
+          const id = cell.dataset.albumId;
+          const quantity = getAlbumQuantity(state, id);
+          const nextQuantity = direction < 0 ? getPreviousAlbumQuantity(quantity) : getNextAlbumQuantity(quantity);
+          setAlbumQuantity(state, id, nextQuantity);
+          store.set('copa2026-album', state);
+          renderAlbumTable();
+        };
+
+        cell.addEventListener('click', event => {
+          changeQuantity(event.shiftKey ? -1 : 1);
+        });
+        cell.addEventListener('contextmenu', event => {
+          event.preventDefault();
+          changeQuantity(-1);
+        });
+        cell.addEventListener('keydown', event => {
+          if ((event.key === 'Enter' || event.key === ' ') && cell.tagName !== 'BUTTON') {
+            event.preventDefault();
+            changeQuantity(1);
+          }
+
+          if (event.key === 'Backspace' || event.key === 'Delete') {
+            event.preventDefault();
+            changeQuantity(-1);
+          }
+        });
+      });
+    }
+
+    function renderMobileAlbumSelector() {
+      const picker = document.getElementById('mobileAlbumPicker');
+      if (!picker) return;
+
+      const albumRows = getAlbumRows();
+      const currentValue = picker.querySelector('#mobileTeamSelect')?.value || albumRows[0].id;
+      const selectedRow = albumRows.find(row => row.id === currentValue) || albumRows[0];
+      const selectedValue = selectedRow.id;
+      const albumState = store.get('copa2026-album', DEFAULT_ALBUM);
+      const cells = selectedRow.cells;
+
+      picker.innerHTML = `
+        <div class="mobile-album-controls">
+          <label for="mobileTeamSelect">Selecionar selecao</label>
+          <select id="mobileTeamSelect">
+            ${albumRows.map(row => {
+              return `<option value="${row.id}"${row.id === selectedValue ? ' selected' : ''}>${row.group} - ${row.name}</option>`;
+            }).join('')}
+          </select>
+        </div>
+        <div class="mobile-album-grid">
+          ${cells.map(cell => {
+            const quantity = getAlbumQuantity(albumState, cell.id);
+            return `<button type="button" class="mobile-album-sticker${getAlbumStickerTypeClass(cell)}${getAlbumStickerClass(quantity)}" data-mobile-album-id="${cell.id}" aria-pressed="${getAlbumPressState(quantity)}" aria-label="${getAlbumStickerAriaLabel(cell, quantity)}">${getAlbumStickerContent(cell, quantity)}</button>`;
+          }).join('')}
+        </div>
+      `;
+
+      picker.querySelector('#mobileTeamSelect').addEventListener('change', renderMobileAlbumSelector);
+      picker.querySelectorAll('[data-mobile-album-id]').forEach(button => {
+        button.addEventListener('click', event => {
+          const state = store.get('copa2026-album', DEFAULT_ALBUM);
+          const id = event.currentTarget.dataset.mobileAlbumId;
+          const quantity = getAlbumQuantity(state, id);
+          const nextQuantity = event.shiftKey ? getPreviousAlbumQuantity(quantity) : getNextAlbumQuantity(quantity);
+          setAlbumQuantity(state, id, nextQuantity);
+          store.set('copa2026-album', state);
+          renderAlbumTable();
+        });
+        button.addEventListener('contextmenu', event => {
+          event.preventDefault();
+          const state = store.get('copa2026-album', DEFAULT_ALBUM);
+          const id = event.currentTarget.dataset.mobileAlbumId;
+          const quantity = getAlbumQuantity(state, id);
+          setAlbumQuantity(state, id, getPreviousAlbumQuantity(quantity));
+          store.set('copa2026-album', state);
+          renderAlbumTable();
+        });
+      });
+    }
+
+    function renderAlbumMetrics() {
+      const albumState = store.get('copa2026-album', DEFAULT_ALBUM);
+      const albumStickerIds = new Set(getAlbumStickerIds());
+      const target = getAlbumTarget();
+      const quantities = Array.from(albumStickerIds).map(id => getAlbumQuantity(albumState, id));
+      const ownedTotal = quantities.reduce((sum, quantity) => sum + quantity, 0);
+      const filled = quantities.reduce((sum, quantity) => sum + Math.min(quantity, target), 0);
+      const repeated = quantities.reduce((sum, quantity) => sum + Math.max(0, quantity - target), 0);
+      const totalAlbum = albumStickerIds.size * target;
+      const missing = totalAlbum - filled;
+      const albumLabel = target === 1 ? '1 álbum' : `${target} álbuns`;
+
+      const metrics = [
+        { label: 'Figurinhas cadastradas', value: ownedTotal, sub: 'Total marcado na tabela, incluindo repetidas' },
+        { label: `Preenchidas nos ${albumLabel}`, value: filled, sub: `Base de ${formatNumber(totalAlbum)} posições necessárias` },
+        { label: 'Ainda faltando', value: missing, sub: `Para completar ${albumLabel}` },
+        { label: 'Repetidas', value: repeated, sub: `Quantidade acima de ${target} por figurinha` }
+      ];
+
+      document.getElementById('albumMetrics').innerHTML = metrics.map(metric => `
+        <div class="metric">
+          <div class="metric-label">${metric.label}</div>
+          <div class="metric-value">${formatNumber(metric.value)}</div>
+          <div class="metric-sub">${metric.sub}</div>
+        </div>
+      `).join('');
+
+      renderInsightCharts();
+    }
+
+    function syncBackupJson() {
+      const textarea = document.getElementById('backupJson');
+      if (!textarea) return;
+      textarea.value = JSON.stringify(getBackupPayload(), null, 2);
+    }
+
+    function renderCountTable() {
+      const table = document.getElementById('countTable');
+      const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+
+      let html = `
+        <thead>
+          <tr>
+            <th class="sticky-top sticky-col-1">Grupo</th>
+            <th class="sticky-top sticky-col-2">Seleção / Extra</th>
+            <th class="sticky-top">Código</th>
+            <th class="sticky-top">Normais</th>
+            <th class="sticky-top">Brilhantes</th>
+            <th class="sticky-top">Perfiladas MC</th>
+            <th class="sticky-top">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      COUNT_ROWS.forEach(row => {
+        const rowCounts = counts[row.id] || { normal: 0, shiny: 0, mc: 0 };
+        const total = safeInt(rowCounts.normal) + safeInt(rowCounts.shiny) + safeInt(rowCounts.mc);
+
+        html += `
+          <tr data-filter="${`${row.group} ${row.name} ${row.code}`.toLowerCase()}">
+            <td class="group-cell sticky-col-1">${row.group}</td>
+            <td class="selection-cell sticky-col-2">${row.name}</td>
+            <td class="code-cell">${row.code}</td>
+            <td><input class="count-input js-count" type="number" min="0" step="1" value="${safeInt(rowCounts.normal)}" data-id="${row.id}" data-kind="normal" /></td>
+            <td><input class="count-input js-count" type="number" min="0" step="1" value="${safeInt(rowCounts.shiny)}" data-id="${row.id}" data-kind="shiny" /></td>
+            <td><input class="count-input js-count" type="number" min="0" step="1" value="${safeInt(rowCounts.mc)}" data-id="${row.id}" data-kind="mc" /></td>
+            <td class="total-cell" data-total-for="${row.id}">${formatNumber(total)}</td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody>';
+      table.innerHTML = html;
+      bindCountInputs();
+      renderCollectionMetrics();
+      applyFilter();
+    }
+
+    function bindCountInputs() {
+      document.querySelectorAll('.js-count').forEach(input => {
+        input.addEventListener('input', event => {
+          const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+          const { id, kind } = event.target.dataset;
+          counts[id] = counts[id] || { normal: 0, shiny: 0, mc: 0 };
+          counts[id][kind] = safeInt(event.target.value);
+          store.set('copa2026-counts', counts);
+          updateRowTotal(id, counts[id]);
+          renderCollectionMetrics();
+        });
+      });
+    }
+
+    function updateRowTotal(id, rowCounts) {
+      const total = safeInt(rowCounts.normal) + safeInt(rowCounts.shiny) + safeInt(rowCounts.mc);
+      const cell = document.querySelector(`[data-total-for="${id}"]`);
+      if (cell) cell.textContent = formatNumber(total);
+    }
+
+    function renderCollectionMetrics() {
+      const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+      let normalTotal = 0;
+      let shinyTotal = 0;
+      let mcTotal = 0;
+
+      COUNT_ROWS.forEach(row => {
+        const rowCounts = counts[row.id] || { normal: 0, shiny: 0, mc: 0 };
+        normalTotal += safeInt(rowCounts.normal);
+        shinyTotal += safeInt(rowCounts.shiny);
+        mcTotal += safeInt(rowCounts.mc);
+      });
+
+      const total = normalTotal + shinyTotal + mcTotal;
+      const packs = store.get('copa2026-packs', DEFAULT_PACKS);
+      const expectedTotal = (safeInt(packs.normalPacks) * 7) + (safeInt(packs.mcPacks) * 5);
+      const diff = total - expectedTotal;
+      const diffLabel = diff === 0 ? 'bate com os envelopes' : diff > 0 ? `${formatNumber(diff)} acima dos envelopes` : `${formatNumber(Math.abs(diff))} abaixo dos envelopes`;
+
+      const metrics = [
+        { label: 'Normais cadastradas', value: normalTotal, sub: 'Soma de todas as seleções e extras' },
+        { label: 'Brilhantes cadastradas', value: shinyTotal, sub: 'Informadas manualmente' },
+        { label: 'Perfiladas MC cadastradas', value: mcTotal, sub: 'Informadas manualmente' },
+        { label: 'Total cadastrado', value: total, sub: diffLabel }
+      ];
+
+      document.getElementById('collectionMetrics').innerHTML = metrics.map(metric => `
+        <div class="metric">
+          <div class="metric-label">${metric.label}</div>
+          <div class="metric-value">${formatNumber(metric.value)}</div>
+          <div class="metric-sub">${metric.sub}</div>
+        </div>
+      `).join('');
+
+      renderDisparityCharts();
+      syncBackupJson();
+    }
+
+
+    function renderDisparityCharts() {
+      const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+      const teamsWithTotals = TEAMS.map(team => {
+        const id = `${team.group}-${team.code}`;
+        const rowCounts = counts[id] || { normal: 0, shiny: 0, mc: 0 };
+        return {
+          label: `${team.code} · ${team.name}`,
+          total: safeInt(rowCounts.normal) + safeInt(rowCounts.shiny) + safeInt(rowCounts.mc)
+        };
+      });
+
+      const sortedDesc = [...teamsWithTotals].sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
+      const sortedAsc = [...teamsWithTotals].sort((a, b) => a.total - b.total || a.label.localeCompare(b.label));
+
+      const topItems = sortedDesc.slice(0, 10);
+      const bottomItems = sortedAsc.slice(0, 10);
+
+      const renderBars = (items, mountId) => {
+        const base = Math.max(...items.map(item => item.total), 1);
+        document.getElementById(mountId).innerHTML = items.map(item => `
+          <div class="bar-row">
+            <div class="bar-name">${item.label}</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: ${(item.total / base) * 100}%"></div>
+            </div>
+            <div class="bar-value">${formatNumber(item.total)}</div>
+          </div>
+        `).join('');
+      };
+
+      renderBars(topItems, 'topTeamsChart');
+      renderBars(bottomItems, 'bottomTeamsChart');
+
+      const maxTeam = sortedDesc[0] || { label: '-', total: 0 };
+      const minTeam = sortedAsc[0] || { label: '-', total: 0 };
+      const average = teamsWithTotals.length ? teamsWithTotals.reduce((sum, item) => sum + item.total, 0) / teamsWithTotals.length : 0;
+      const spread = maxTeam.total - minTeam.total;
+
+      const metrics = [
+        { label: 'Maior total', value: maxTeam.total, sub: maxTeam.label },
+        { label: 'Menor total', value: minTeam.total, sub: minTeam.label },
+        { label: 'Diferença', value: spread, sub: 'Distância entre a maior e a menor seleção' },
+        { label: 'Média por seleção', value: Math.round(average), sub: 'Referência para comparar disparidades' }
+      ];
+
+      document.getElementById('disparityMetrics').innerHTML = metrics.map(metric => `
+        <div class="metric">
+          <div class="metric-label">${metric.label}</div>
+          <div class="metric-value">${formatNumber(metric.value)}</div>
+          <div class="metric-sub">${metric.sub}</div>
+        </div>
+      `).join('');
+
+      renderInsightCharts();
+    }
+
+    function renderBarList(mountId, items) {
+      const mount = document.getElementById(mountId);
+      if (!mount) return;
+
+      const base = Math.max(...items.map(item => item.value), 1);
+      mount.innerHTML = items.map(item => `
+        <div class="bar-row">
+          <div class="bar-name">${item.label}</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${(item.value / base) * 100}%"></div>
+          </div>
+          <div class="bar-value">${item.displayValue || formatNumber(item.value)}</div>
+        </div>
+      `).join('');
+    }
+
+    function getTeamCountTotals() {
+      const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+      return TEAMS.map(team => {
+        const id = `${team.group}-${team.code}`;
+        const rowCounts = counts[id] || { normal: 0, shiny: 0, mc: 0 };
+        const normal = safeInt(rowCounts.normal);
+        const shiny = safeInt(rowCounts.shiny);
+        const mc = safeInt(rowCounts.mc);
+        return {
+          id,
+          group: team.group,
+          label: `${team.code} · ${team.name}`,
+          normal,
+          shiny,
+          mc,
+          total: normal + shiny + mc
+        };
+      });
+    }
+
+    function getAlbumStatsForCells(cells, albumState) {
+      const target = getAlbumTarget();
+      return cells.reduce((acc, cell) => {
+        const quantity = getAlbumQuantity(albumState, cell.id);
+        acc.owned += quantity;
+        acc.filled += Math.min(quantity, target);
+        acc.repeated += Math.max(0, quantity - target);
+        acc.total += target;
+        return acc;
+      }, { owned: 0, filled: 0, repeated: 0, total: 0 });
+    }
+
+    function renderInsightCharts() {
+      const teamTotals = getTeamCountTotals();
+      const groupTotals = Array.from(teamTotals.reduce((map, item) => {
+        map.set(item.group, (map.get(item.group) || 0) + item.total);
+        return map;
+      }, new Map()).entries()).map(([group, value]) => ({ label: `Grupo ${group}`, value }));
+
+      const normalTotal = teamTotals.reduce((sum, item) => sum + item.normal, 0);
+      const shinyTotal = teamTotals.reduce((sum, item) => sum + item.shiny, 0);
+      const mcTotal = teamTotals.reduce((sum, item) => sum + item.mc, 0);
+      const totalCount = normalTotal + shinyTotal + mcTotal;
+
+      const albumState = store.get('copa2026-album', DEFAULT_ALBUM);
+      const counts = store.get('copa2026-counts', DEFAULT_COUNTS);
+      const teamAlbumStats = TEAMS.map(team => {
+        const cells = getSelectableAlbumCells(getAlbumCellsForTeam(team));
+        const stats = getAlbumStatsForCells(cells, albumState);
+        return {
+          id: `${team.group}-${team.code}`,
+          label: `${team.code} · ${team.name}`,
+          missing: stats.total - stats.filled,
+          repeated: stats.repeated,
+          filled: stats.filled,
+          owned: stats.owned
+        };
+      });
+
+      const inconsistencies = teamAlbumStats.map(item => {
+        const rowCounts = counts[item.id] || { normal: 0, shiny: 0, mc: 0 };
+        const countTotal = safeInt(rowCounts.normal) + safeInt(rowCounts.shiny) + safeInt(rowCounts.mc);
+        const diff = item.owned - countTotal;
+        const direction = diff > 0 ? 'tabela acima' : diff < 0 ? 'contador acima' : 'ok';
+        return {
+          label: `${item.label} (${direction})`,
+          value: Math.abs(diff),
+          displayValue: diff === 0 ? '0' : `${diff > 0 ? '+' : '-'}${formatNumber(Math.abs(diff))}`
+        };
+      }).filter(item => item.value > 0).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label)).slice(0, 12);
+
+      const extraStats = EXTRA_ALBUM_ROWS.map(row => {
+        const stats = getAlbumStatsForCells(getExtraAlbumCells(row), albumState);
+        return { label: row.name, value: stats.filled, missing: stats.total - stats.filled, repeated: stats.repeated };
+      });
+
+      const closestTeams = [...teamAlbumStats]
+        .sort((a, b) => a.missing - b.missing || b.filled - a.filled || a.label.localeCompare(b.label))
+        .slice(0, 10)
+        .map(item => ({ label: item.label, value: item.missing }));
+
+      const repeatedTeams = [...teamAlbumStats]
+        .sort((a, b) => b.repeated - a.repeated || a.label.localeCompare(b.label))
+        .slice(0, 10)
+        .map(item => ({ label: item.label, value: item.repeated }));
+
+      const topGroup = [...groupTotals].sort((a, b) => b.value - a.value)[0] || { label: '-', value: 0 };
+      const mostRepeated = [...teamAlbumStats].sort((a, b) => b.repeated - a.repeated || a.label.localeCompare(b.label))[0] || { label: '-', repeated: 0 };
+      const leastMissing = [...teamAlbumStats].sort((a, b) => a.missing - b.missing || a.label.localeCompare(b.label))[0] || { label: '-', missing: 0 };
+      const biggestInconsistency = inconsistencies[0] || { label: 'Sem divergências', value: 0 };
+      const shinyRate = totalCount ? Math.round((shinyTotal / totalCount) * 100) : 0;
+
+      document.getElementById('insightMetrics').innerHTML = [
+        { label: 'Grupo mais cheio', value: topGroup.value, sub: topGroup.label },
+        { label: 'Mais perto de fechar', value: leastMissing.missing, sub: `${leastMissing.label} faltando` },
+        { label: 'Mais repetidas', value: mostRepeated.repeated, sub: mostRepeated.label },
+        { label: '% brilhantes', value: shinyRate, sub: 'Sobre o total cadastrado' },
+        { label: 'Maior incoerência', value: biggestInconsistency.value, sub: biggestInconsistency.label }
+      ].map(metric => `
+        <div class="metric">
+          <div class="metric-label">${metric.label}</div>
+          <div class="metric-value">${formatNumber(metric.value)}</div>
+          <div class="metric-sub">${metric.sub}</div>
+        </div>
+      `).join('');
+
+      renderBarList('groupTotalsChart', groupTotals);
+      renderBarList('compositionChart', [
+        { label: 'Normais', value: normalTotal },
+        { label: 'Brilhantes', value: shinyTotal },
+        { label: 'Perfiladas MC', value: mcTotal }
+      ]);
+      renderBarList('closestTeamsChart', closestTeams);
+      renderBarList('repeatedTeamsChart', repeatedTeams);
+      renderBarList('extraAlbumChart', extraStats.flatMap(item => [
+        { label: `${item.label} preenchidas`, value: item.value },
+        { label: `${item.label} faltantes`, value: item.missing },
+        { label: `${item.label} repetidas`, value: item.repeated }
+      ]));
+      renderBarList('inconsistencyChart', inconsistencies.length ? inconsistencies : [{ label: 'Nenhuma incoerência encontrada', value: 0, displayValue: '0' }]);
+    }
+
+    function applyFilter() {
+      const query = document.getElementById('filterInput').value.trim().toLowerCase();
+      document.querySelectorAll('#countTable tbody tr').forEach(row => {
+        const haystack = row.dataset.filter || '';
+        row.style.display = haystack.includes(query) ? '' : 'none';
+      });
+    }
+
+    function restoreInputs() {
+      const packs = store.get('copa2026-packs', DEFAULT_PACKS);
+      document.getElementById('normalPacks').value = safeInt(packs.normalPacks);
+      document.getElementById('mcPacks').value = safeInt(packs.mcPacks);
+    }
+
+    function clearCounts() {
+      if (!confirm('Zerar toda a contagem por seleção?')) return;
+      store.set('copa2026-counts', {});
+      renderCountTable();
+    }
+
+    function resetDefaults() {
+      if (!confirm('Voltar para os dados padrão que você passou?')) return;
+      store.set('copa2026-counts', clone(DEFAULT_COUNTS));
+      store.set('copa2026-packs', clone(DEFAULT_PACKS));
+      restoreInputs();
+      renderPackMetrics();
+      renderCountTable();
+    }
+
+    function clearAll() {
+      if (!confirm('Zerar envelopes, contagem e marcações do álbum?')) return;
+      store.set('copa2026-counts', {});
+      store.set('copa2026-packs', { normalPacks: 0, mcPacks: 0 });
+      store.set('copa2026-album', {});
+      restoreInputs();
+      renderPackMetrics();
+      renderCountTable();
+      renderAlbumTable();
+    }
+
+    function clearAlbum() {
+      if (!confirm('Zerar somente as marcações clicáveis do álbum?')) return;
+      store.set('copa2026-album', {});
+      renderAlbumTable();
+    }
+
+    function getBackupPayload() {
+      return {
+        schema: 'copa2026-album-backup-v1',
+        exportedAt: new Date().toISOString(),
+        storageVersion: STORAGE_VERSION,
+        data: {
+          packs: store.get('copa2026-packs', DEFAULT_PACKS),
+          counts: store.get('copa2026-counts', DEFAULT_COUNTS),
+          album: store.get('copa2026-album', DEFAULT_ALBUM),
+          albumTarget: getAlbumTarget(),
+          theme: localStorage.getItem('copa2026-theme') || 'light'
+        }
+      };
+    }
+
+    function setBackupStatus(message) {
+      document.getElementById('backupStatus').textContent = message;
+    }
+
+    function setImportStatus(message) {
+      document.getElementById('importStatus').textContent = message;
+    }
+
+    function getBackupJson() {
+      syncBackupJson();
+      return document.getElementById('backupJson').value;
+    }
+
+    function exportJson() {
+      const json = getBackupJson();
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `album-copa-2026-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setBackupStatus('JSON exportado.');
+    }
+
+    async function copyJson() {
+      const json = getBackupJson();
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(json);
+        } else {
+          const textarea = document.getElementById('backupJson');
+          textarea.focus();
+          textarea.select();
+          document.execCommand('copy');
+        }
+        setBackupStatus('JSON copiado para a area de transferencia.');
+      } catch {
+        setBackupStatus('Nao foi possivel copiar automaticamente. Selecione o texto e copie manualmente.');
+      }
+    }
+
+    function normalizeImportedBackup(raw) {
+      const parsed = JSON.parse(raw);
+      const data = parsed.data || parsed;
+
+      if (!data || typeof data !== 'object') {
+        throw new Error('JSON invalido.');
+      }
+
+      return {
+        packs: data.packs && typeof data.packs === 'object' ? data.packs : null,
+        counts: data.counts && typeof data.counts === 'object' ? data.counts : null,
+        album: data.album && typeof data.album === 'object' ? data.album : null,
+        albumTarget: safeInt(data.albumTarget),
+        theme: data.theme
+      };
+    }
+
+    function refreshAllViews() {
+      restoreInputs();
+      restoreAlbumTarget();
+      renderPackMetrics();
+      renderAlbumTable();
+      renderCountTable();
+      getBackupJson();
+    }
+
+    function applyImportedBackup(raw) {
+      const data = normalizeImportedBackup(raw);
+
+      if (data.packs) store.set('copa2026-packs', data.packs);
+      if (data.counts) store.set('copa2026-counts', data.counts);
+      if (data.album) store.set('copa2026-album', data.album);
+      if (data.albumTarget >= 1) localStorage.setItem('copa2026-album-target', String(Math.min(20, data.albumTarget)));
+      if (data.theme === 'dark' || data.theme === 'light') applyTheme(data.theme);
+
+      migrateAlbumQuantities();
+      restoreAlbumTarget();
+      refreshAllViews();
+      setImportStatus('JSON importado com sucesso.');
+    }
+
+    function importJsonFromTextarea() {
+      const raw = document.getElementById('importJsonText').value.trim();
+      if (!raw) {
+        setImportStatus('Cole um JSON antes de importar.');
+        return;
+      }
+
+      try {
+        applyImportedBackup(raw);
+      } catch (error) {
+        setImportStatus(`Erro ao importar: ${error.message}`);
+      }
+    }
+
+    function importJsonFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          document.getElementById('importJsonText').value = String(reader.result || '');
+          applyImportedBackup(String(reader.result || ''));
+        } catch (error) {
+          setImportStatus(`Erro ao importar arquivo: ${error.message}`);
+        }
+      };
+      reader.onerror = () => setImportStatus('Nao foi possivel ler o arquivo.');
+      reader.readAsText(file);
+    }
+
+    function applyTheme(theme) {
+      const nextTheme = theme === 'dark' ? 'dark' : 'light';
+      document.body.dataset.theme = nextTheme;
+      localStorage.setItem('copa2026-theme', nextTheme);
+      const select = document.getElementById('themeSelect');
+      if (select) select.value = nextTheme;
+    }
+
+    function restoreTheme() {
+      applyTheme(localStorage.getItem('copa2026-theme') || 'light');
+    }
+
+    document.getElementById('normalPacks').addEventListener('input', renderPackMetrics);
+    document.getElementById('mcPacks').addEventListener('input', renderPackMetrics);
+    document.getElementById('filterInput').addEventListener('input', applyFilter);
+    document.getElementById('clearCounts').addEventListener('click', clearCounts);
+    document.getElementById('resetDefaults').addEventListener('click', resetDefaults);
+    document.getElementById('clearAll').addEventListener('click', clearAll);
+    document.getElementById('clearAlbum').addEventListener('click', clearAlbum);
+    document.getElementById('albumTarget').addEventListener('input', event => setAlbumTarget(event.target.value));
+    document.getElementById('themeSelect').addEventListener('change', event => applyTheme(event.target.value));
+    document.getElementById('exportJson').addEventListener('click', exportJson);
+    document.getElementById('copyJson').addEventListener('click', copyJson);
+    document.getElementById('importJson').addEventListener('click', importJsonFromTextarea);
+    document.getElementById('importJsonFileButton').addEventListener('click', () => document.getElementById('importJsonFile').click());
+    document.getElementById('importJsonFile').addEventListener('change', event => importJsonFile(event.target.files[0]));
+
+    restoreTheme();
+    initDefaults();
+    restoreInputs();
+    restoreAlbumTarget();
+    renderPackMetrics();
+    renderAlbumTable();
+    renderCountTable();
+    getBackupJson();
+  </script>
+</body>
+</html>
