@@ -4,7 +4,9 @@
 
 This repository currently contains a standalone static web app:
 
-- `figurinhas-copa-2026-clean-v3.html`: complete HTML document with inline CSS and JavaScript for tracking Copa 2026 sticker album progress.
+- `index.html`: HTML entry point for the Copa 2026 sticker album tracker.
+- `style.css`: application styles, including light/dark themes and table/chart layout.
+- `app.js`: browser JavaScript for rendering tables, charts, persistence, import/export, and interactions.
 - `AGENTS.md`: contributor and agent guidance.
 
 There is no separate `src/`, `tests/`, or asset directory yet. If the app grows, split reusable JavaScript into `src/`, styles into `styles/`, and browser tests into `tests/` while keeping the HTML entry point clear.
@@ -13,9 +15,9 @@ There is no separate `src/`, `tests/`, or asset directory yet. If the app grows,
 
 No install or build step is required.
 
-- Open locally: double-click `figurinhas-copa-2026-clean-v3.html` or open it from a browser with `Ctrl+O`.
+- Open locally: double-click `index.html` or open it from a browser with `Ctrl+O`.
 - Quick syntax inspection: use browser DevTools Console after loading the page.
-- Optional static server: `python -m http.server 8000`, then visit `http://localhost:8000/figurinhas-copa-2026-clean-v3.html`.
+- Optional static server: `python -m http.server 8000`, then visit `http://localhost:8000/`.
 
 Use a local server if browser behavior differs when loading from `file://`.
 
@@ -38,7 +40,7 @@ When adding tests later, use browser-focused tests under `tests/` and name files
 
 ## Commit & Pull Request Guidelines
 
-This folder is not currently a Git repository, so no commit history conventions are available. Use concise imperative commit messages, for example `Add sticker counter filters` or `Fix mobile table layout`.
+Use concise imperative commit messages, for example `Add sticker counter filters` or `Fix mobile table layout`.
 
 Pull requests should include a short summary, manual test notes, and screenshots or screen recordings for visible UI changes. Mention any storage key or migration changes clearly because they can affect existing browser data.
 

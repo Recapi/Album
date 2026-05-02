@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Figurinhas Copa 2026</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div>
+        <h1>Controle de Figurinhas Copa 2026</h1>
+        <p class="subtitle">Versão clean com seus dados padrão, extras detalhados com contador por figurinha e gráfico de disparidade entre seleções.</p>
+      </div>
+      <div class="theme-control">
+        <label for="themeSelect">Tema</label>
+        <select id="themeSelect">
+          <option value="light">Claro</option>
+          <option value="dark">Escuro</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Envelopes comprados</h2>
+          <p class="section-note">Envelope normal = 7 figurinhas. Envelope MC = 4 normais + 1 perfilada amarela.</p>
+        </div>
+        <div class="badge">Os dados ficam salvos no navegador</div>
+      </div>
+
+      <div class="envelopes-grid">
+        <div class="input-card">
+          <label for="normalPacks">Quantos envelopes normais você comprou</label>
+          <input id="normalPacks" type="number" min="0" step="1" />
+          <div class="hint">Cada envelope normal conta 7 figurinhas.</div>
+        </div>
+        <div class="input-card">
+          <label for="mcPacks">Quantos envelopes MC você comprou</label>
+          <input id="mcPacks" type="number" min="0" step="1" />
+          <div class="hint">Cada MC conta 4 normais e 1 perfilada.</div>
+        </div>
+      </div>
+
+      <div class="grid cards" id="packMetrics"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Tabela do álbum</h2>
+          <p class="section-note">Clique para somar quantas figurinhas você tem. A tela calcula o que falta para a meta de álbuns e separa as repetidas.</p>
+        </div>
+      </div>
+
+      <div class="album-actions">
+        <button id="clearAlbum">Zerar marcações do álbum</button>
+        <label class="inline-control" for="albumTarget">
+          Álbuns para completar
+          <input id="albumTarget" type="number" min="1" max="20" step="1" />
+        </label>
+      </div>
+
+      <div class="grid cards" id="albumMetrics" style="margin-bottom: 16px;"></div>
+
+      <div class="table-shell">
+        <table class="album-table" id="albumTable"></table>
+      </div>
+      <div class="mobile-album-picker" id="mobileAlbumPicker"></div>
+
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Contagem por seleção</h2>
+          <p class="section-note">Normais, brilhantes e perfiladas MC com total automático. O gráfico abaixo usa esses totais para mostrar as maiores e menores seleções.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left" style="min-width: min(100%, 340px); flex: 1;">
+          <input id="filterInput" type="search" placeholder="Filtrar por grupo, seleção ou código" />
+        </div>
+        <div class="toolbar-right">
+          <button id="clearCounts">Zerar contagem</button>
+          <button id="resetDefaults">Voltar para seus dados padrão</button>
+          <button id="clearAll" class="primary">Zerar tudo</button>
+        </div>
+      </div>
+
+      <div class="grid cards" id="collectionMetrics" style="margin-bottom: 16px;"></div>
+
+      <div class="table-shell">
+        <table class="count-table" id="countTable"></table>
+      </div>
+
+      <div class="footer-note">Dica: clique nas células da tabela do álbum para marcar o que você já tem, use os contadores dos extras e acompanhe o gráfico para descobrir diferenças entre as seleções.</div>
+    </section>
+
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Disparidade entre seleções</h2>
+          <p class="section-note">Comparativo automático das seleções com mais figurinhas e menos figurinhas, usando a soma de normais, brilhantes e perfiladas MC.</p>
+        </div>
+      </div>
+
+      <div class="grid cards" id="disparityMetrics" style="margin-bottom: 16px;"></div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Seleções com mais figurinhas</h3>
+          <p>Ranking das maiores quantidades cadastradas.</p>
+          <div class="bar-list" id="topTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Seleções com menos figurinhas</h3>
+          <p>Ranking das menores quantidades cadastradas.</p>
+          <div class="bar-list" id="bottomTeamsChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Insights do álbum</h2>
+          <p class="section-note">Outras leituras automáticas para entender onde a coleção está avançando, sobrando ou ficando para trás.</p>
+        </div>
+      </div>
+
+      <div class="grid cards" id="insightMetrics" style="margin-bottom: 16px;"></div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Total por grupo</h3>
+          <p>Soma cadastrada por grupo, considerando normais, brilhantes e perfiladas MC.</p>
+          <div class="bar-list" id="groupTotalsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Composição da coleção</h3>
+          <p>Participação de normais, brilhantes e perfiladas MC no total cadastrado.</p>
+          <div class="bar-list" id="compositionChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Mais próximas de completar</h3>
+          <p>Seleções com menos faltantes para fechar a meta de álbuns.</p>
+          <div class="bar-list" id="closestTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Repetidas por seleção</h3>
+          <p>Onde há mais figurinhas acima das 2 necessárias.</p>
+          <div class="bar-list" id="repeatedTeamsChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Extras do álbum</h3>
+          <p>FWC do início, FWC do fim e Coca-Cola em preenchidas, faltantes e repetidas.</p>
+          <div class="bar-list" id="extraAlbumChart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Incoerências tabela x contadores</h3>
+          <p>Compara a tabela do álbum com o total informado nos contadores por seleção.</p>
+          <div class="bar-list" id="inconsistencyChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Backup dos dados</h2>
+          <p class="section-note">Exporte, copie ou importe os dados salvos neste navegador em formato JSON.</p>
+        </div>
+      </div>
+
+      <div class="backup-grid">
+        <div class="backup-panel">
+          <div class="backup-actions">
+            <button id="exportJson">Exportar JSON</button>
+            <button id="copyJson">Copiar JSON</button>
+          </div>
+          <textarea id="backupJson" readonly placeholder="O JSON exportado aparece aqui."></textarea>
+          <div class="status-line" id="backupStatus"></div>
+        </div>
+        <div class="backup-panel">
+          <div class="backup-actions">
+            <button id="importJson">Importar JSON</button>
+            <button id="importJsonFileButton">Importar arquivo</button>
+            <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
+          </div>
+          <textarea id="importJsonText" placeholder="Cole aqui um JSON exportado e clique em Importar JSON."></textarea>
+          <div class="status-line" id="importStatus"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
